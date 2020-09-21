@@ -16,6 +16,13 @@ class Vector {
         return this.array[index];
     }
 
+    set(index, value) {
+        if (index > this.array.length) {
+            this.array = extendArray(this.array, index + 1);
+        }
+        this.array[index] = value;
+    }
+
     push(value) {
         if (this.size / this.array.length > 0.8) {
             // extend array size
@@ -88,10 +95,4 @@ function extendArray(currArr, newLength) {
     return arr;
 }
 
-// function possiblyShrink(arr, tailIndex) {
-//     const ls = new Array(size);
-//     ls.fill(undefined);
-//     Object.seal(ls);
-//     return ls;
-// }
 module.exports = Vector

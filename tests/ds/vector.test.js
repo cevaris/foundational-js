@@ -15,6 +15,19 @@ test('push elements into vector', () => {
     expect(vector.size).toBe(2);
 });
 
+test('set elements into vector', () => {
+    const vector = new Vector();
+
+    vector.set(0, 'a');
+    expect(vector.get(0)).toBe('a');
+
+    vector.set(1, 'b');
+    expect(vector.get(1)).toBe('b');
+
+    vector.set(15, 'c');
+    expect(vector.get(15)).toBe('c');
+});
+
 test('push elements into vector to force resize', () => {
     const vector = new Vector();
     for (let i = 0; i < 15; i++) {
