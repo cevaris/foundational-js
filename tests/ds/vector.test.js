@@ -8,8 +8,8 @@ test('create empty Vector', () => {
 test('push elements into vector', () => {
     const vector = new Vector();
 
-    expect(vector.push('a')).toBe(0);
-    expect(vector.push('b')).toBe(1);
+    expect(vector.push('a')).toBe(1);
+    expect(vector.push('b')).toBe(2);
 
     expect(Array.from(vector)).toStrictEqual(['a', 'b']);
 });

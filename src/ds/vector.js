@@ -34,7 +34,7 @@ export class Vector {
     push(value) {
         this.array = extendArr(this.array, this.length + 1);
         this.array[this.length - 1] = value;
-        return this.length - 1;
+        return this.length;
     }
 
     /**
@@ -54,7 +54,7 @@ export class Vector {
     }
 
     /**
-     * Remove items from Vector starting at `start` index, up to following deleteCount elements. 
+     * Remove items from Vector starting at `start` index, up to follwing deleteCount elements.
      */
     splice(start, deleteCount) {
         const response = new Vector();
