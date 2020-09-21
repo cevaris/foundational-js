@@ -33,7 +33,21 @@ class Vector {
     }
 
     removeIndex(value) {
-        
+
+    }
+
+    /**
+     * Iterate over every value, preserve values if the predicate function return true.
+     * @param {Function} predicate Function that takes one parameter and returns a boolean.
+     */
+    filter(predicate) {
+        const results = new Vector();
+        for(const value of this){
+            if(predicate(value)) {
+                results.push(value);
+            }
+        }
+        return results;
     }
 
     [Symbol.iterator]() {

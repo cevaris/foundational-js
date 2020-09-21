@@ -23,6 +23,16 @@ test('push elements into vector to force resize', () => {
     expect(v.size).toBe(15);
 });
 
+test('filter vector elements', () => {
+    const v = new Vector();
+    for (let i = 0; i < 10; i++) {
+        v.push(i);
+    }
+    const result = v.filter((a) => a % 2 == 0);
+
+    expect(Array.from(result)).toStrictEqual([0, 2, 4, 6, 8]);
+});
+
 test('push into vector and get elements', () => {
     const v = new Vector();
 
