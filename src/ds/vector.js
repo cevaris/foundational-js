@@ -27,12 +27,10 @@ class Vector {
     }
 
     [Symbol.iterator]() {
-        console.log('got here');
         let i = 0;
         let vector = this;
         return {
             next() {
-                console.log('entered next');
                 const value = vector.get(i);
                 if (i < vector.tailIndex) {
                     i++;
