@@ -53,6 +53,9 @@ export class Vector {
         return value;
     }
 
+    /**
+     * Remove items from Vector starting at `start` index, up to following deleteCount elements. 
+     */
     splice(start, deleteCount) {
         const response = new Vector();
         if (start < this.length) {
