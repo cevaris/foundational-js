@@ -1,27 +1,16 @@
 const INIT_LENGTH = 10;
 
 class Vector {
-    // Current number of values in array
-    length;
-    // Fixed array value
-    array;
-    // index of tail value.
-    tailIndex;
-
     constructor() {
-        this.array = [...new Array(INIT_LENGTH)];
-        this.length = 0;
+        this.array = newArray(INIT_LENGTH);
+        this.size = 0;
         this.tailIndex = 0;
     }
 
-    get length() {
-        return this.length;
-    }
-
     push(value) {
-        if ((this.length + 1) > this.array.length) {
-            const newLength = this.length + INIT_LENGTH;
-            const arr = [...new Array(newLength)];
+        if ((this.size + 1) > this.array.length) {
+            const newLength = this.size + INIT_LENGTH;
+            const arr = newArray(newLength);
             for (let i = 0; i < this.array.length; i++) {
                 arr[i] = this.array[i];
             }
@@ -29,13 +18,41 @@ class Vector {
         }
 
         this.array[this.tailIndex] = value;
-        this.length++;
+        this.size++;
         this.tailIndex++;
     }
 
     get(index) {
         return this.array[index];
     }
+
+    [Symbol.iterator]() {
+        console.log('got here');
+        let i = 0;
+        let vector = this;
+        return {
+            next() {
+                console.log('entered next');
+                const value = vector.get(i);
+                if (i < vector.tailIndex) {
+                    i++;
+                    return { value: value, done: false };
+                } else {
+                    return { value: value, done: true };
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Creates new fixed sized array, of given size. 
+ */
+function newArray(size) {
+    const ls = new Array(size);
+    ls.fill(undefined);
+    Object.seal(ls);
+    return ls;
 }
 
 module.exports = Vector
