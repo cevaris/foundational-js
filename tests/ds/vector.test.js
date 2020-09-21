@@ -5,7 +5,7 @@ test('create empty Vector', () => {
     expect(v.size).toBe(0);
 });
 
-test('insert elements into vector', () => {
+test('push elements into vector', () => {
     const v = new Vector();
 
     v.push('a');
@@ -15,7 +15,7 @@ test('insert elements into vector', () => {
     expect(v.size).toBe(2);
 });
 
-test('insert elements into vector to force resize', () => {
+test('push elements into vector to force resize', () => {
     const v = new Vector();
     for (let i = 0; i < 15; i++) {
         v.push(i);
@@ -23,7 +23,7 @@ test('insert elements into vector to force resize', () => {
     expect(v.size).toBe(15);
 });
 
-test('insert into vector and get elements', () => {
+test('push into vector and get elements', () => {
     const v = new Vector();
 
     v.push('a');
@@ -32,7 +32,6 @@ test('insert into vector and get elements', () => {
     expect(v.get(0)).toBe('a');
     expect(v.get(1)).toBe('b');
 });
-
 
 test('iterate over Vector', () => {
     const v = new Vector();

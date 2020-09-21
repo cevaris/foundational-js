@@ -1,5 +1,10 @@
 const INIT_LENGTH = 10;
 
+/**
+ * Vector manages an internal fixed array to contain a list of elements.
+ * Internal array grows/shrinks/shifts as needed. 
+ * Note: Array.push is not used because we purposefully seal the Array to a fixed size. 
+ */
 class Vector {
     constructor() {
         this.array = newArray(INIT_LENGTH);
@@ -9,10 +14,11 @@ class Vector {
 
     push(value) {
         if ((this.size + 1) > this.array.length) {
+            // extend array size
             const newLength = this.size + INIT_LENGTH;
             const arr = newArray(newLength);
             for (let i = 0; i < this.array.length; i++) {
-                arr[i] = this.array[i];
+                arr[i] = this.get(i);
             }
             this.array = arr;
         }
@@ -26,9 +32,14 @@ class Vector {
         return this.array[index];
     }
 
+    removeIndex(value) {
+        
+    }
+
     [Symbol.iterator]() {
+        // save a reference to `this` object; 
+        const vector = this;
         let i = 0;
-        let vector = this;
         return {
             next() {
                 const value = vector.get(i);
