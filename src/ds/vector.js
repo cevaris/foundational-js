@@ -31,13 +31,14 @@ export class Vector {
 
     pop() {
         const index = this.array.length - 1;
-        if (index < 0) {
-            return undefined;
-        } else {
-            const value = this.get(index);
+        const value = this.get(index);
+
+        if (index >= 0) {
+            // shortens array, does not include last element
             this.array = truncateArr(this.array, index);
-            return value;
         }
+
+        return value;
     }
 
     /**
