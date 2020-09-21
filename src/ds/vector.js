@@ -16,6 +16,10 @@ export class Vector {
         return this.array[index];
     }
 
+    /**
+     * Sets a value at the provided Vector index. 
+     * If the index location is larger than existing Vector, the Vector is resized.
+     */
     set(index, value) {
         if (index >= this.array.length) {
             this.array = extendArr(this.array, this.array.length + index + 1);
@@ -23,12 +27,20 @@ export class Vector {
         this.array[index] = value;
     }
 
+    /**
+     * Pushes a value to the end of the Vector.
+     * Returns index of where value was inserted. 
+     */
     push(value) {
         this.array = extendArr(this.array, this.array.length + 1);
         this.array[this.array.length - 1] = value;
         return this.array.length - 1;
     }
 
+    /**
+     * Removes last element in Vector. 
+     * If no elements are left, returns undefined. 
+     */
     pop() {
         const index = this.array.length - 1;
         const value = this.get(index);
@@ -46,15 +58,23 @@ export class Vector {
      * @param {Function} predicate Function that takes one parameter and returns a boolean.
      */
     filter(predicate) {
-        const results = new Vector();
+        const vector = new Vector();
         for (const value of this) {
             if (predicate(value)) {
-                results.push(value);
+                vector.push(value);
             }
         }
-        return results;
+        return vector;
     }
 
+    /**
+     * Defines an iterator such that callers can easily iterate over Vector.
+     * ex. 
+     * 
+     * for (const e of vector) {
+     *    console.log(e);
+     * }
+     */
     [Symbol.iterator]() {
         // save a reference to `this` object; 
         const vector = this;

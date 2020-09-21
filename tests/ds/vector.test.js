@@ -35,7 +35,7 @@ test('pop elements from a vector', () => {
 
     expect(vector.pop()).toBe('b');
     expect(vector.pop()).toBe('a');
-    
+
     // verify all elements popped
     expect(vector.pop()).toBe(undefined);
 });
@@ -75,8 +75,6 @@ test('iterate over Vector', () => {
 
     let index = 0;
 
-    // Note: we have to use `of` keyword here to iterate over Vector
-    // https://stackoverflow.com/a/29286412/3538289
     for (const e of vector) {
         expect(e).toBe(data[index]);
         index++;
