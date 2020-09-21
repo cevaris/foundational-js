@@ -83,6 +83,10 @@ function newArray(size) {
     return ls;
 }
 
+/**
+ * Grows the array to the provided length. 
+ * Copies all existing elements into new array.
+ */
 function extendArr(currArr, newLength) {
     const arr = newArray(newLength);
     for (let i = 0; i < currArr.length; i++) {
@@ -91,6 +95,10 @@ function extendArr(currArr, newLength) {
     return arr;
 }
 
+/**
+ * Shortens the provided array up the provided length.
+ * Copies all existing elements into new array.
+ */
 function truncateArr(currArr, newLength) {
     const arr = newArray(newLength);
     for (let i = 0; i < newLength; i++) {
@@ -98,4 +106,3 @@ function truncateArr(currArr, newLength) {
     }
     return arr;
 }
-
