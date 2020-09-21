@@ -1,18 +1,17 @@
-import Vector from '../../src/ds/vector';
+import { Vector, VECTOR_INIT_LENGTH } from '../../src/ds/vector';
 
 test('create empty Vector', () => {
     const vector = new Vector();
-    expect(vector.size).toBe(0);
+    expect(vector.length).toBe(0);
 });
 
 test('push elements into vector', () => {
     const vector = new Vector();
 
-    vector.push('a');
-    expect(vector.size).toBe(1);
+    expect(vector.push('a')).toBe(0);
+    expect(vector.push('b')).toBe(1);
 
-    vector.push('b');
-    expect(vector.size).toBe(2);
+    expect(Array.from(vector)).toStrictEqual(['a', 'b']);
 });
 
 test('set elements into vector', () => {
@@ -23,27 +22,21 @@ test('set elements into vector', () => {
 
     vector.set(1, 'b');
     expect(vector.get(1)).toBe('b');
-
-    vector.set(15, 'c');
-    expect(vector.get(15)).toBe('c');
-});
-
-test('push elements into vector to force resize', () => {
-    const vector = new Vector();
-    for (let i = 0; i < 15; i++) {
-        vector.push(i);
-    }
-    expect(vector.size).toBe(15);
 });
 
 test('pop elements from a vector', () => {
     const vector = new Vector();
+
+    // pop on empty Vector
+    expect(vector.pop()).toBe(undefined);
 
     vector.push('a');
     vector.push('b');
 
     expect(vector.pop()).toBe('b');
     expect(vector.pop()).toBe('a');
+    
+    // verify all elements popped
     expect(vector.pop()).toBe(undefined);
 });
 

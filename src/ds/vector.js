@@ -1,15 +1,15 @@
-const INIT_LENGTH = 10;
-
 /**
  * Vector manages an internal fixed array to contain a list of elements.
  * Internal array grows/shrinks/shifts as needed. 
  * Note: Array.push is not used because we purposefully seal the Array to a fixed size. 
  */
-class Vector {
+export class Vector {
     constructor() {
-        this.array = newArray(INIT_LENGTH);
-        this.size = 0;
-        this.tailIndex = 0;
+        this.array = newArray(0);
+    }
+
+    get length() {
+        return this.array.length;
     }
 
     get(index) {
@@ -17,31 +17,26 @@ class Vector {
     }
 
     set(index, value) {
-        if (index > this.array.length) {
-            this.array = extendArray(this.array, index + 1);
+        if (index >= this.array.length) {
+            this.array = extendArr(this.array, this.array.length + index + 1);
         }
         this.array[index] = value;
     }
 
     push(value) {
-        if (this.size / this.array.length > 0.8) {
-            // extend array size
-            this.array = extendArray(this.array, this.size + INIT_LENGTH);
-        }
-
-        this.array[this.tailIndex] = value;
-        this.size++;
-        this.tailIndex++;
+        this.array = extendArr(this.array, this.array.length + 1);
+        this.array[this.array.length - 1] = value;
+        return this.array.length - 1;
     }
 
     pop() {
-        if (this.tailIndex > 0) {
-            const value = this.array[this.tailIndex - 1];
-            this.tailIndex--;
-            // possiblyShrink();
-            return value;
-        } else {
+        const index = this.array.length - 1;
+        if (index < 0) {
             return undefined;
+        } else {
+            const value = this.get(index);
+            this.array = truncateArr(this.array, index);
+            return value;
         }
     }
 
@@ -66,7 +61,7 @@ class Vector {
         return {
             next() {
                 const value = vector.get(i);
-                if (i < vector.tailIndex) {
+                if (i < vector.length) {
                     i++;
                     return { value: value, done: false };
                 } else {
@@ -87,7 +82,7 @@ function newArray(size) {
     return ls;
 }
 
-function extendArray(currArr, newLength) {
+function extendArr(currArr, newLength) {
     const arr = newArray(newLength);
     for (let i = 0; i < currArr.length; i++) {
         arr[i] = currArr[i];
@@ -95,4 +90,11 @@ function extendArray(currArr, newLength) {
     return arr;
 }
 
-module.exports = Vector
+function truncateArr(currArr, newLength) {
+    const arr = newArray(newLength);
+    for (let i = 0; i < newLength; i++) {
+        arr[i] = currArr[i];
+    }
+    return arr;
+}
+
