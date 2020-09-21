@@ -12,15 +12,14 @@ class Vector {
         this.tailIndex = 0;
     }
 
+    get(index) {
+        return this.array[index];
+    }
+
     push(value) {
-        if ((this.size + 1) > this.array.length) {
+        if (this.size / this.array.length > 0.8) {
             // extend array size
-            const newLength = this.size + INIT_LENGTH;
-            const arr = newArray(newLength);
-            for (let i = 0; i < this.array.length; i++) {
-                arr[i] = this.get(i);
-            }
-            this.array = arr;
+            this.array = extendArray(this.array, this.size + INIT_LENGTH);
         }
 
         this.array[this.tailIndex] = value;
@@ -28,12 +27,15 @@ class Vector {
         this.tailIndex++;
     }
 
-    get(index) {
-        return this.array[index];
-    }
-
-    removeIndex(value) {
-
+    pop() {
+        if (this.tailIndex > 0) {
+            const value = this.array[this.tailIndex - 1];
+            this.tailIndex--;
+            // possiblyShrink();
+            return value;
+        } else {
+            return undefined;
+        }
     }
 
     /**
@@ -42,8 +44,8 @@ class Vector {
      */
     filter(predicate) {
         const results = new Vector();
-        for(const value of this){
-            if(predicate(value)) {
+        for (const value of this) {
+            if (predicate(value)) {
                 results.push(value);
             }
         }
@@ -78,4 +80,18 @@ function newArray(size) {
     return ls;
 }
 
+function extendArray(currArr, newLength) {
+    const arr = newArray(newLength);
+    for (let i = 0; i < currArr.length; i++) {
+        arr[i] = currArr[i];
+    }
+    return arr;
+}
+
+// function possiblyShrink(arr, tailIndex) {
+//     const ls = new Array(size);
+//     ls.fill(undefined);
+//     Object.seal(ls);
+//     return ls;
+// }
 module.exports = Vector
