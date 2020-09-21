@@ -21,8 +21,8 @@ export class Vector {
      * If the index location is larger than existing Vector, the Vector is resized.
      */
     set(index, value) {
-        if (index >= this.array.length) {
-            this.array = extendArr(this.array, this.array.length + index + 1);
+        if (index >= this.length) {
+            this.array = extendArr(this.array, this.length + index + 1);
         }
         this.array[index] = value;
     }
@@ -32,9 +32,9 @@ export class Vector {
      * Returns index of where value was inserted. 
      */
     push(value) {
-        this.array = extendArr(this.array, this.array.length + 1);
-        this.array[this.array.length - 1] = value;
-        return this.array.length - 1;
+        this.array = extendArr(this.array, this.length + 1);
+        this.array[this.length - 1] = value;
+        return this.length - 1;
     }
 
     /**
@@ -42,7 +42,7 @@ export class Vector {
      * If no elements are left, returns undefined. 
      */
     pop() {
-        const index = this.array.length - 1;
+        const index = this.length - 1;
         const value = this.get(index);
 
         if (index >= 0) {
@@ -51,6 +51,22 @@ export class Vector {
         }
 
         return value;
+    }
+
+    splice(start, deleteCount) {
+        const response = new Vector();
+        if (start < this.length) {
+            const vector = new Vector();
+            for (let i = 0; i < this.length; i++) {
+                if (i < start || i > (start + deleteCount - 1)) {
+                    vector.push(this.get(i));
+                } else {
+                    response.push(this.get(i));
+                }
+            }
+            this.array = vector.array;
+        }
+        return response;
     }
 
     /**
@@ -97,10 +113,10 @@ export class Vector {
  * Creates new fixed sized array, of given size. 
  */
 function newArray(size) {
-    const ls = new Array(size);
-    ls.fill(undefined);
-    Object.seal(ls);
-    return ls;
+    const array = new Array(size);
+    array.fill(undefined);
+    Object.seal(array);
+    return array;
 }
 
 /**
@@ -108,11 +124,11 @@ function newArray(size) {
  * Copies all existing elements into new array.
  */
 function extendArr(currArr, newLength) {
-    const arr = newArray(newLength);
+    const array = newArray(newLength);
     for (let i = 0; i < currArr.length; i++) {
-        arr[i] = currArr[i];
+        array[i] = currArr[i];
     }
-    return arr;
+    return array;
 }
 
 /**
@@ -120,9 +136,9 @@ function extendArr(currArr, newLength) {
  * Copies all existing elements into new array.
  */
 function truncateArr(currArr, newLength) {
-    const arr = newArray(newLength);
+    const array = newArray(newLength);
     for (let i = 0; i < newLength; i++) {
-        arr[i] = currArr[i];
+        array[i] = currArr[i];
     }
-    return arr;
+    return array;
 }

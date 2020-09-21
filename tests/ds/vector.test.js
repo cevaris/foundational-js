@@ -60,6 +60,36 @@ test('push into vector and get elements', () => {
     expect(vector.get(1)).toBe('b');
 });
 
+test('splice vector', () => {
+    const vector = new Vector();
+
+    vector.push('a');
+    vector.push('b');
+    vector.push('c');
+    vector.push('d');
+
+    // verify splicing an index that does not exist returns empty 
+    // and does not mutate vector
+    expect(Array.from(vector.splice(100, 1))).toStrictEqual([]);
+    expect(Array.from(vector)).toStrictEqual(['a', 'b', 'c', 'd']);
+
+    // ['a', 'b', 'c', 'd']
+    expect(Array.from(vector.splice(1, 2))).toStrictEqual(['b', 'c']);
+    expect(Array.from(vector)).toStrictEqual(['a', 'd']);
+
+    // ['a', 'd']
+    expect(Array.from(vector.splice(0, 1))).toStrictEqual(['a']);
+    expect(Array.from(vector)).toStrictEqual(['d']);
+
+    // ['d']
+    expect(Array.from(vector.splice(0, 1))).toStrictEqual(['d']);
+    expect(Array.from(vector)).toStrictEqual([]);
+
+    // slice with empty values
+    expect(Array.from(vector.splice(0, 1))).toStrictEqual([]);
+    expect(Array.from(vector)).toStrictEqual([]);
+});
+
 test('iterate over Vector', () => {
     const vector = new Vector();
 
