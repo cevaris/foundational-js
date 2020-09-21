@@ -1,5 +1,5 @@
 # Foundation Javascript
-Data Structures, algorithms, idioms.
+Javascript data structures, algorithms, idioms.
 
 ### Getting started
 
