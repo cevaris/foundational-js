@@ -1,4 +1,4 @@
-import { Vector, VECTOR_INIT_LENGTH } from '../../src/ds/vector';
+import { Vector } from '../../src/ds/vector';
 
 test('create empty Vector', () => {
     const vector = new Vector();
