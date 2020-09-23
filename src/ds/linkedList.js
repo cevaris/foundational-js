@@ -5,6 +5,10 @@ class Node {
     }
 }
 
+/**
+ * Java based LinkedList
+ * https://docs.oracle.com/javase/7/docs/api/java/util/LinkedList.html 
+ */
 export class LinkedList {
     constructor() {
         this.head = null;
@@ -28,18 +32,44 @@ export class LinkedList {
 
         if (this.head === null) {
             this.head = node;
-        } else {
-            let temp = this.head;
-            while (temp.next !== null) {
-                temp = temp.next;
-            }
-            temp.next = node;
+            return 1;
         }
+
+        let temp = this.head;
+        while (temp.next) {
+            temp = temp.next;
+        }
+        temp.next = node;
 
         return this.length;
     }
 
-    remove(value) { }
+    remove(value) {
+        // if first item is the value we are looking for
+        if (this.head && this.head.value === value) {
+            this.head = this.head.next;
+            return true;
+        }
+        
+        // search for the previous `prev` node that matches value
+        let prev = null;
+        let curr = this.head;
+        while (curr && curr.value !== value) {
+            prev = curr;
+            curr = curr.next;
+        }
+
+        // did not find a value match, nothing to delete
+        if(curr === null) {
+            return false;
+        }
+
+        // found value match in `curr`; 
+        // update prev.next to skip over `curr`
+        prev.next = curr.next;
+        return true;
+    }
+
     filter(predicate) { }
     map(func) { }
 
