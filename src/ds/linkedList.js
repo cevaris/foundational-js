@@ -22,6 +22,17 @@ export class LinkedList {
         return count;
     }
 
+    get(index) {
+        let currIndex = 0;
+        for (const e of this) {
+            if (currIndex === index) {
+                return e;
+            }
+            currIndex++;
+        }
+        throw new Error(`IndexOutOfBounds ${index}`);
+    }
+
     /**
      * Adds value to end of linked list.
      * Returns new length.
@@ -54,7 +65,7 @@ export class LinkedList {
             this.head = this.head.next;
             return true;
         }
-        
+
         // search for the previous `prev` node that matches value
         let prev = null;
         let curr = this.head;
@@ -64,7 +75,7 @@ export class LinkedList {
         }
 
         // did not find a value match, nothing to delete
-        if(curr === null) {
+        if (curr === null) {
             return false;
         }
 

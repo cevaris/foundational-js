@@ -56,3 +56,21 @@ test('remove elements from  LinkedList', () => {
     expect(list.remove('z')).toBe(false);
     expect(Array.from(list)).toStrictEqual([]);
 });
+
+test('get LinkedList values by index', () => {
+    const list = new LinkedList();
+
+    // expect index out of bound error 
+    expect(() => list.get(0)).toThrowError(/IndexOutOfBounds 0/)
+
+    list.add('a');
+    list.add('b');
+    list.add('c');
+
+    expect(list.get(0)).toBe('a');
+    expect(list.get(1)).toBe('b');
+    expect(list.get(2)).toBe('c');
+    
+    // expect index out of bound error 
+    expect(() => list.get(3)).toThrowError(/IndexOutOfBounds 3/)
+});
