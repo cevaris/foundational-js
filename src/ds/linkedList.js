@@ -22,6 +22,28 @@ export class LinkedList {
         return count;
     }
 
+    set(index, value) {
+        let currIndex = 0;
+        let temp = this.head;
+        // while list is non-empty and current node is defined
+        while (this.head && temp) {
+            // if current index matches target index
+            if (currIndex === index) {
+                // save and return previous value
+                // update to the new value.
+                const prevValue = temp.value;
+                temp.value = value;
+                return prevValue;
+            }
+
+            currIndex++;
+            temp = temp.next;
+        }
+
+        // provided index did not exist (list is too small)
+        throw new Error(`IndexOutOfBounds ${index}`);
+    }
+
     get(index) {
         let currIndex = 0;
         for (const e of this) {

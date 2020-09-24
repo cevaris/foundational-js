@@ -61,7 +61,7 @@ test('get LinkedList values by index', () => {
     const list = new LinkedList();
 
     // expect index out of bound error 
-    expect(() => list.get(0)).toThrowError(/IndexOutOfBounds 0/)
+    expect(() => list.get(0)).toThrowError(/IndexOutOfBounds 0/);
 
     list.add('a');
     list.add('b');
@@ -72,5 +72,25 @@ test('get LinkedList values by index', () => {
     expect(list.get(2)).toBe('c');
     
     // expect index out of bound error 
-    expect(() => list.get(3)).toThrowError(/IndexOutOfBounds 3/)
+    expect(() => list.get(3)).toThrowError(/IndexOutOfBounds 3/);
+});
+
+test('set LinkedList values by index', () => {
+    const list = new LinkedList();
+
+    // list set can only work on existing indexes
+    expect(() => list.set(0, 'a')).toThrowError(/IndexOutOfBounds 0/);
+
+    list.add('a');
+    list.add('b');
+    list.add('c');
+
+    expect(list.set(0, 'x')).toBe('a');
+    expect(list.set(1, 'y')).toBe('b');
+    expect(list.set(2, 'z')).toBe('c');
+
+    expect(Array.from(list)).toStrictEqual(['x', 'y', 'z']); 
+
+    // list set can only work on existing indexes
+    expect(() => list.set(3, 'zz')).toThrowError(/IndexOutOfBounds 3/);
 });
