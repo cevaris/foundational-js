@@ -16,16 +16,15 @@ export class LinkedList {
 
     get length() {
         let count = 0;
-
         for (const e of this) {
             count++;
         }
-
         return count;
     }
 
     /**
      * Adds value to end of linked list.
+     * Returns new length.
      */
     add(value) {
         const node = new Node(value);
@@ -44,6 +43,11 @@ export class LinkedList {
         return this.length;
     }
 
+    /**
+     * Removes first occurrence of value.
+     * If value does not exist, returns false;
+     * If value is removed, returns true;
+     */
     remove(value) {
         // if first item is the value we are looking for
         if (this.head && this.head.value === value) {
@@ -102,11 +106,9 @@ export class LinkedList {
 
     toString() {
         const arr = [];
-
         for (const e of this) {
             arr.push(e);
         }
-
         return `LinkedList(${arr.join(',')})`;
     }
 }
