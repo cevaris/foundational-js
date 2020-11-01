@@ -14,6 +14,9 @@ test('add to HashMap', () => {
     map.put('duplicate', 6); // not counted, but overwritten
 
     expect(map.length).toBe(4);
+
+    // verify duplicate insertion has latest value
+    expect(map.get('duplicate')).toBe(6);
 });
 
 test('remove from HashMap', () => {

@@ -18,24 +18,24 @@ export class HashMap {
         this._maybeResize();
         const bucket = this._getBucket(key);
 
-        let foundDupAtIndex = -1;
-        let index = 0;
+        let foundDupKeyAtIdx = -1;
+        let bucketIdx = 0;
         for (const kv of bucket) {
             if (kv.key === key) {
-                foundDupAtIndex = index;
+                foundDupKeyAtIdx = bucketIdx;
                 break;
             } else {
-                index++;
+                bucketIdx++;
             }
         }
 
-        if (foundDupAtIndex == -1) {
-            // no duplicate key, add new key value
+        if (foundDupKeyAtIdx === -1) {
+            // no duplicate key found, add new key value
             bucket.add(keyValue(key, value));
             this.size++;
         } else {
             // duplicate key found, overwrite value, do not modify size
-            bucket.set(foundDupAtIndex, keyValue(key, value));
+            bucket.set(foundDupKeyAtIdx, keyValue(key, value));
         }
 
     }
@@ -53,14 +53,7 @@ export class HashMap {
 
     get(key) {
         const bucket = this._getBucket(key);
-
-        let foundKV = false;
-        for (const kv of bucket) {
-            if (kv.key === key) {
-                foundKV = kv;
-                break;
-            }
-        }
+        let foundKV = this._findKV(bucket, key);
 
         if (foundKV) {
             return foundKV.value;
@@ -71,14 +64,7 @@ export class HashMap {
 
     remove(key) {
         const bucket = this._getBucket(key);
-
-        let foundKV = false;
-        for (const kv of bucket) {
-            if (kv.key === key) {
-                foundKV = kv;
-                break;
-            }
-        }
+        let foundKV = this._findKV(bucket, key);
 
         if (foundKV) {
             bucket.remove(foundKV);
@@ -107,6 +93,15 @@ export class HashMap {
                 }
             }
         }
+    }
+
+    _findKV(bucket, key) {
+        for (const kv of bucket) {
+            if (kv.key === key) {
+                return kv;
+            }
+        }
+        return false;
     }
 
     _getBucket(value) {
