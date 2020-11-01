@@ -17,9 +17,7 @@ export class HashSet {
     }
 
     add(value) {
-        const hashNumber = hashCode(value);
-        const bucketIdx = hashNumber % BucketSize;
-        const bucket = this.buckets[bucketIdx];
+        const bucket = this._getBucket(value);
 
         if (bucket.includes(value)) {
             return;
@@ -30,17 +28,13 @@ export class HashSet {
     }
 
     includes(value) {
-        const hashNumber = hashCode(value);
-        const bucketIdx = hashNumber % BucketSize;
-        const bucket = this.buckets[bucketIdx];
+        const bucket = this._getBucket(value);
 
         return bucket.includes(value);
     }
 
     remove(value) {
-        const hashNumber = hashCode(value);
-        const bucketIdx = hashNumber % BucketSize;
-        const bucket = this.buckets[bucketIdx];
+        const bucket = this._getBucket(value);
 
         const found = bucket.remove(value);
         // only if the value was found; we update size
@@ -51,6 +45,27 @@ export class HashSet {
 
     get length() {
         return this.size;
+    }
+
+    [Symbol.iterator]() {
+
+        return {
+            next() {
+                const value = vector.get(i);
+                if (i < vector.length) {
+                    i++;
+                    return { value: value, done: false };
+                } else {
+                    return { value: value, done: true };
+                }
+            }
+        }
+    }
+
+    _getBucket(value) {
+        const hashNumber = hashCode(value);
+        const bucketIdx = hashNumber % BucketSize;
+        return this.buckets[bucketIdx];
     }
 }
 
