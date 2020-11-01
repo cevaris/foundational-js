@@ -3,19 +3,21 @@ import { LinkedList } from './linkedList';
 // const key = hash({foo: 'bar'})
 
 const InitialBucketSize = 10;
+const ResizeLoadFactor = 0.75;
 
 export class HashSet {
-    constructor() {
+    constructor(bucketSize = InitialBucketSize) {
         // Using a fixed array for the table to prevent resizing
         // Otherwise we can accidentally break the modulo mapping.
-        this.bucketSize = InitialBucketSize;
-        this.buckets = newFixedArray(InitialBucketSize);
+        this.bucketSize = bucketSize;
+        this.buckets = newFixedArray(bucketSize);
 
         this.buckets.forEach((_, i) => this.buckets[i] = new LinkedList());
         this.size = 0;
     }
 
     add(value) {
+        this._maybeResize();
         const bucket = this._getBucket(value);
 
         if (bucket.includes(value)) {
@@ -69,6 +71,25 @@ export class HashSet {
         const hashNumber = hashCode(value);
         const bucketIdx = hashNumber % InitialBucketSize;
         return this.buckets[bucketIdx];
+    }
+
+    _maybeResize() {
+        const loadFactor = this.bucketSize * ResizeLoadFactor;
+        if (this.size > loadFactor) {
+            const newBucketSize = this.size * 2;
+            const newBuckets = newFixedArray(newBucketSize);
+            newBuckets.forEach((_, i) => newBuckets[i] = new LinkedList());
+
+            for (const e of this) {
+                const hashNumber = hashCode(e);
+                const bucketIdx = hashNumber % InitialBucketSize;
+                const bucket = newBucketSize[bucketIdx];
+                bucket.add(value);
+            }
+
+            this.buckets = newBuckets;
+            this.bucketSize = newBucketSize;
+        }
     }
 }
 
