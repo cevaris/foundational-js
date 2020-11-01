@@ -61,20 +61,21 @@ test('get from HashMap', () => {
     expect(map.get('does not exist')).toBeNull();
 });
 
-// test('iterate over HashMap', () => {
-//     const map = new HashMap();
+test('iterate over HashMap', () => {
+    const map = new HashMap();
 
-//     const data = {};
-//     for (let i = 0; i < 1000; i++) {
-//         // build index -> value reference
-//         data[i] = i.toString();
-//         // load up HashMap with values
-//         map.add(i.toString());
-//     }
+    const data = {};
+    for (let i = 0; i < 1000; i++) {
+        // build index -> value reference
+        data[i] = { key: i, value: i.toString() };
+        // load up HashMap with values
+        map.put(i, i.toString());
+    }
 
-//     let index = 0;
-//     for (const e of map) {
-//         expect(e).toBe(data[index]);
-//         index++;
-//     }
-// });
+    let index = 0;
+    for (const e of map) {
+        expect(e.key).toBe(data[index].key);
+        expect(e.value).toBe(data[index].value);
+        index++;
+    }
+});
