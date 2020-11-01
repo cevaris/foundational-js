@@ -3,7 +3,7 @@ import { LinkedList } from './linkedList';
 const InitialBucketSize = 10;
 const ResizeLoadFactor = 0.75;
 
-export class HashSet {
+export class HashMap {
     constructor(bucketSize = InitialBucketSize) {
         // Using a fixed array for the table to prevent resizing
         // Otherwise we can accidentally break the modulo mapping.
@@ -14,30 +14,74 @@ export class HashSet {
         this.size = 0;
     }
 
-    add(value) {
+    put(key, value) {
         this._maybeResize();
-        const bucket = this._getBucket(value);
+        const bucket = this._getBucket(key);
 
-        if (bucket.includes(value)) {
-            return;
+        let foundDupAtIndex = -1;
+        let index = 0;
+        for (const kv of bucket) {
+            if (kv.key === key) {
+                foundDupAtIndex = index;
+                break;
+            } else {
+                index++;
+            }
         }
 
-        bucket.add(value);
-        this.size++;
+        if (foundDupAtIndex == -1) {
+            // no duplicate key, add new key value
+            bucket.add(keyValue(key, value));
+            this.size++;
+        } else {
+            // duplicate key found, overwrite value, do not modify size
+            bucket.set(foundDupAtIndex, keyValue(key, value));
+        }
+
     }
 
-    includes(value) {
-        const bucket = this._getBucket(value);
+    includes(key) {
+        const bucket = this._getBucket(key);
 
-        return bucket.includes(value);
+        let found = false;
+        for (const kv of bucket) {
+            found = kv.key === key || found;
+        }
+
+        return found;
     }
 
-    remove(value) {
-        const bucket = this._getBucket(value);
+    get(key) {
+        const bucket = this._getBucket(key);
 
-        const found = bucket.remove(value);
-        // only if the value was found; we update size
-        if (found) {
+        let foundKV = false;
+        for (const kv of bucket) {
+            if (kv.key === key) {
+                foundKV = kv;
+                break;
+            }
+        }
+
+        if (foundKV) {
+            return foundKV.value;
+        } else {
+            return null;
+        }
+    }
+
+    remove(key) {
+        const bucket = this._getBucket(key);
+
+        let foundKV = false;
+        for (const kv of bucket) {
+            if (kv.key === key) {
+                foundKV = kv;
+                break;
+            }
+        }
+
+        if (foundKV) {
+            bucket.remove(foundKV);
             this.size--;
         }
     }
@@ -121,4 +165,8 @@ function newFixedArray(size) {
     return array;
 }
 
-export default HashSet;
+function keyValue(key, value) {
+    return { key: key, value: value };
+}
+
+export default HashMap;
