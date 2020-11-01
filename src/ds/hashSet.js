@@ -1,17 +1,16 @@
 import { LinkedList } from './linkedList';
-// Symbol.iterator
-
 // capacity = number of buckets * load factor
 // const key = hash({foo: 'bar'})
 
-const BucketSize = 10;
+const InitialBucketSize = 10;
 
 export class HashSet {
-
     constructor() {
         // Using a fixed array for the table to prevent resizing
         // Otherwise we can accidentally break the modulo mapping.
-        this.buckets = newFixedArray(BucketSize);
+        this.bucketSize = InitialBucketSize;
+        this.buckets = newFixedArray(InitialBucketSize);
+
         this.buckets.forEach((_, i) => this.buckets[i] = new LinkedList());
         this.size = 0;
     }
@@ -48,15 +47,19 @@ export class HashSet {
     }
 
     [Symbol.iterator]() {
+        let bucketIdx = 0;
+        let buckets = this.buckets;
+        let bucketIter = buckets[bucketIdx].iterator;
 
         return {
-            next() {
-                const value = vector.get(i);
-                if (i < vector.length) {
-                    i++;
-                    return { value: value, done: false };
+            next: function () {
+                if (!bucketIter) {
+                    return { value: null, done: true }
+                } else if (!bucketIter.done) {
+                    return bucketIter;
                 } else {
-                    return { value: value, done: true };
+                    bucketIter = buckets[++bucketIdx].iterator;
+                    return bucketIter;
                 }
             }
         }
@@ -64,7 +67,7 @@ export class HashSet {
 
     _getBucket(value) {
         const hashNumber = hashCode(value);
-        const bucketIdx = hashNumber % BucketSize;
+        const bucketIdx = hashNumber % InitialBucketSize;
         return this.buckets[bucketIdx];
     }
 }

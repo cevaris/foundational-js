@@ -48,3 +48,21 @@ test('includes from HashSet', () => {
     expect(set.includes('3')).toBeTruthy();
     expect(set.includes('does not exist')).toBeFalsy();
 });
+
+test('iterate over HashSet', () => {
+    const set = new HashSet();
+
+    const data = {};
+    for (let i = 0; i < 100; i++) {
+        // build index -> value reference
+        data[i] = i.toString();
+        // load up HashSet with values
+        set.add(i.toString());
+    }
+
+    let index = 0;
+    for (const e of set) {
+        expect(e).toBe(data[index]);
+        index++;
+    }
+});
