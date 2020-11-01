@@ -53,7 +53,7 @@ test('iterate over HashSet', () => {
     const set = new HashSet();
 
     const data = {};
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 1000; i++) {
         // build index -> value reference
         data[i] = i.toString();
         // load up HashSet with values
