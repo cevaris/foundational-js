@@ -107,6 +107,14 @@ export class LinkedList {
         return true;
     }
 
+    includes(value) {
+        let found = false;
+        for (const e of this) {
+            found = found || e === value;
+        }
+        return found;
+    }
+
     filter(predicate) { }
     map(func) { }
 

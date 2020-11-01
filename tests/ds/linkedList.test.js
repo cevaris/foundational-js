@@ -94,3 +94,14 @@ test('set LinkedList values by index', () => {
     // list set can only work on existing indexes
     expect(() => list.set(3, 'zz')).toThrowError(/IndexOutOfBounds 3/);
 });
+
+test('includes in LinkedList', () => {
+    const list = new LinkedList();
+
+    list.add('a');
+    list.add('b');
+    list.add('c');
+
+    expect(list.includes('a')).toBeTruthy()
+    expect(list.includes('3')).toBeFalsy();
+});
