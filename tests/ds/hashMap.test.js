@@ -1,11 +1,5 @@
 import { HashMap } from "../../src/ds/hashMap";
 
-// afterAll(async (done) => {
-//     if (!process.stdout.write('')) {
-//         process.stdout.once('drain', () => { done(); });
-//     }
-// });
-
 test('create empty HashMap', () => {
     const map = new HashMap();
     expect(map.length).toBe(0);

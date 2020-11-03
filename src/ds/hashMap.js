@@ -4,36 +4,34 @@ export class HashMap {
     constructor(bucketSize) {
         // Using a fixed array for the table to prevent resizing
         // Otherwise we can accidentally break the modulo mapping.
-        this.buckets = newFixedArray(bucketSize || 9);
+        this.buckets = newFixedArray(bucketSize || 15);
+        // initialize empty arrays per bucket
         this.buckets.forEach((_, i) => this.buckets[i] = new Array());
-        this.size = 0;
+        this.numOfKeyValues = 0;
     }
 
     put(key, value) {
         this._maybeResize();
+
         const bucket = this._getBucket(key);
         const kv = keyValue(key, value);
 
-        let foundDupeKey = false;
         for (let i = 0; i < bucket.length; i++) {
             if (bucket[i].key === key) {
                 // duplicate key found, overwrite value
                 bucket[i] = kv;
-                foundDupeKey = true;
+                return;
             }
         };
 
-        if (foundDupeKey) {
-            return;
-        }
-
         // no duplicate key found, add new key value
         bucket.push(kv);
-        this.size++;
+        this.numOfKeyValues++;
     }
 
     includes(key) {
         const bucket = this._getBucket(key);
+        // if some key found a bucket, return true
         return bucket.some(kv => kv.key === key);
     }
 
@@ -41,6 +39,7 @@ export class HashMap {
         const bucket = this._getBucket(key);
         const foundKV = bucket.find(kv => kv.key === key);
         if (foundKV) {
+            // key found in bucket, return value
             return foundKV.value;
         } else {
             return null;
@@ -52,14 +51,15 @@ export class HashMap {
         const foundKV = bucket.find(kv => kv.key === key);
 
         if (foundKV) {
+            // key found in bucket, remove
             var index = bucket.indexOf(foundKV);
             if (index > -1) bucket.splice(index, 1);
-            this.size--;
+            this.numOfKeyValues--;
         }
     }
 
     get length() {
-        return this.size;
+        return this.numOfKeyValues;
     }
 
     *iterator() {
@@ -68,7 +68,7 @@ export class HashMap {
                 yield this.buckets[b][bi];
             }
         }
-        return this.size;
+        return this.numOfKeyValues;
     }
 
     [Symbol.iterator]() {
@@ -81,22 +81,23 @@ export class HashMap {
         return this.buckets[bucketIdx];
     }
 
+    /**
+     * Resize the map if the map loadFactor threshold is passed.
+     * Note: on a resize, the numOfKeyValues stays the same.
+     */
     _maybeResize() {
         const loadFactor = this.buckets.length * ResizeLoadFactor;
-        if (this.size > loadFactor) {
+        if (this.numOfKeyValues > loadFactor) {
             const newBucketSize = this.buckets.length * 2;
             const newBuckets = newFixedArray(newBucketSize);
             newBuckets.forEach((_, i) => newBuckets[i] = new Array());
 
-            for (let b = 0; b < this.buckets.length; b++) {
-                for (let bi = 0; bi < this.buckets[b].length; bi++) {
-                    const e = this.buckets[b][bi];
-                    const newHashNumber = hashCode(e);
-                    const newBucketIdx = newHashNumber % newBucketSize;
-                    newBuckets[newBucketIdx].push(e);
-                }
+            // Copy over previously inserted keyValues into the new, larger newBuckets.
+            for (const kv of this) {
+                const newHashNumber = hashCode(kv.key);
+                const newBucketIdx = newHashNumber % newBucketSize;
+                newBuckets[newBucketIdx].push(kv);
             }
-
 
             this.buckets = newBuckets;
         }
