@@ -32,19 +32,12 @@ export class HashMap {
 
     includes(key) {
         const bucket = this._getBucket(key);
-
-        let found = false;
-        for (const kv of bucket) {
-            found = kv.key === key || found;
-        }
-
-        return found;
+        return bucket.some(kv => kv.key === key);
     }
 
     get(key) {
         const bucket = this._getBucket(key);
-        let foundKV = this._findKV(bucket, key);
-
+        const foundKV = bucket.find(kv => kv.key === key);
         if (foundKV) {
             return foundKV.value;
         } else {
@@ -54,7 +47,7 @@ export class HashMap {
 
     remove(key) {
         const bucket = this._getBucket(key);
-        let foundKV = this._findKV(bucket, key);
+        const foundKV = bucket.find(kv => kv.key === key);
 
         if (foundKV) {
             var index = bucket.indexOf(foundKV);
@@ -85,15 +78,6 @@ export class HashMap {
                 }
             }
         }
-    }
-
-    _findKV(bucket, key) {
-        for (const kv of bucket) {
-            if (kv.key === key) {
-                return kv;
-            }
-        }
-        return false;
     }
 
     _getBucket(value) {
