@@ -1,29 +1,31 @@
-const InitialBucketSize = 10;
 const ResizeLoadFactor = 0.75;
 
 export class HashMap {
-    constructor(bucketSize = InitialBucketSize) {
+    constructor(bucketSize) {
         // Using a fixed array for the table to prevent resizing
         // Otherwise we can accidentally break the modulo mapping.
-        this.bucketSize = bucketSize;
-        this.buckets = newFixedArray(bucketSize);
-
+        this.buckets = newFixedArray(bucketSize || 9);
         this.buckets.forEach((_, i) => this.buckets[i] = new Array());
         this.size = 0;
     }
 
     put(key, value) {
-        this._maybeResize();
+        // this._maybeResize();
         const bucket = this._getBucket(key);
         const kv = keyValue(key, value);
 
+        let foundDupeKey = false;
         for (let i = 0; i < bucket.length; i++) {
             if (bucket[i].key === key) {
                 // duplicate key found, overwrite value
                 bucket[i] = kv;
-                return;
+                foundDupeKey = true;
             }
         };
+
+        if (foundDupeKey) {
+            return;
+        }
 
         // no duplicate key found, add new key value
         bucket.push(kv);
@@ -52,7 +54,6 @@ export class HashMap {
         if (foundKV) {
             var index = bucket.indexOf(foundKV);
             if (index > -1) bucket.splice(index, 1);
-            // bucket.remove(foundKV);
             this.size--;
         }
     }
@@ -64,44 +65,91 @@ export class HashMap {
     [Symbol.iterator]() {
         let bucketIdx = 0;
         let buckets = this.buckets;
-        let bucketIter = buckets[bucketIdx].iterator;
+        // let bucket = buckets[bucketIdx];
 
+        // let bucketIdx = 0;
+        // const iters = buckets.map(bucket => bucket[Symbol.iterator]());
+
+        let iter = buckets[bucketIdx][Symbol.iterator]();
         return {
             next: function () {
-                if (!bucketIter) {
-                    return { value: null, done: true }
-                } else if (!bucketIter.done) {
-                    return bucketIter;
-                } else {
-                    bucketIter = buckets[++bucketIdx].iterator;
-                    return bucketIter;
+                if (iter.done) {
+                    bucketIdx++;
                 }
+
+                if (bucketIdx >= buckets.length) {
+                    return { value: null, done: true };
+                } else {
+                    iter = buckets[bucketIdx][Symbol.iterator]();
+                }
+
+                const next = iter.next();
+                if (iter.done) {
+                    return { value: null, done: true };
+                } else {
+                    return next;
+                }
+
+
+                // if (iter) {
+                //     return { value: null, done: true };
+                // }
+
+
+                // const next = iter.next();
+                // if (next) {
+                //     return next;
+                // }
+
+                // if (bucketIdx < buckets) {
+                //     buc
+                // }
+
+
+                // if (iter.done) {
+                //     return { value: null, done: true };
+                // } else {
+                //     return iter.next();
+                // }
+
+
+                // if (!bucketIter) {
+                //     return { value: null, done: true }
+                // } else if (!bucketIter.done) {
+                //     return bucketIter;
+                // } else {
+                //     bucketIter = buckets[++bucketIdx].entries();
+                //     return bucketIter;
+                // }
             }
         }
     }
 
     _getBucket(value) {
         const hashNumber = hashCode(value);
-        const bucketIdx = hashNumber % InitialBucketSize;
+        const bucketIdx = hashNumber % this.buckets.length;
         return this.buckets[bucketIdx];
     }
 
     _maybeResize() {
-        const loadFactor = this.bucketSize * ResizeLoadFactor;
+        const loadFactor = this.buckets.length * ResizeLoadFactor;
         if (this.size > loadFactor) {
-            const newBucketSize = this.size * 2;
+            const newBucketSize = this.buckets.length * 2;
             const newBuckets = newFixedArray(newBucketSize);
             newBuckets.forEach((_, i) => newBuckets[i] = new Array());
 
-            for (const e of this) {
-                const hashNumber = hashCode(e);
-                const bucketIdx = hashNumber % InitialBucketSize;
-                const bucket = newBucketSize[bucketIdx];
-                bucket.push(value);
+            for (let b = 0; b < this.buckets.length; b++) {
+                for (let bi = 0; bi < this.buckets[b].length; bi++) {
+                    const e = this.buckets[b][bi];
+                    const newHashNumber = hashCode(e);
+                    const newBucketIdx = newHashNumber % newBucketSize;
+                    newBuckets[newBucketIdx].push(e);
+                }
             }
 
+
             this.buckets = newBuckets;
-            this.bucketSize = newBucketSize;
+            // this.buckets.length = newBucketSize;
         }
     }
 }
