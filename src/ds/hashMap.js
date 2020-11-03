@@ -62,6 +62,16 @@ export class HashMap {
         return this.size;
     }
 
+
+    *iterator() {
+        for (let b = 0; b < this.buckets.length; b++) {
+            for (let bi = 0; bi < this.buckets[b].length; bi++) {
+                yield this.buckets[b][bi];
+            }
+        }
+        return this.size;
+    }
+
     [Symbol.iterator]() {
         let bucketIdx = 0;
         let buckets = this.buckets;
@@ -70,25 +80,25 @@ export class HashMap {
         // let bucketIdx = 0;
         // const iters = buckets.map(bucket => bucket[Symbol.iterator]());
 
-        let iter = buckets[bucketIdx][Symbol.iterator]();
+
         return {
             next: function () {
-                if (iter.done) {
-                    bucketIdx++;
-                }
+                // if (iter.done) {
+                //     bucketIdx++;
+                // }
 
-                if (bucketIdx >= buckets.length) {
-                    return { value: null, done: true };
-                } else {
-                    iter = buckets[bucketIdx][Symbol.iterator]();
-                }
+                // if (bucketIdx >= buckets.length) {
+                //     return { value: null, done: true };
+                // } else {
+                //     iter = buckets[bucketIdx][Symbol.iterator]();
+                // }
 
-                const next = iter.next();
-                if (iter.done) {
-                    return { value: null, done: true };
-                } else {
-                    return next;
-                }
+                // const next = iter.next();
+                // if (iter.done) {
+                //     return { value: null, done: true };
+                // } else {
+                //     return next;
+                // }
 
 
                 // if (iter) {
