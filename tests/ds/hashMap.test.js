@@ -73,18 +73,15 @@ test('get from HashMap', () => {
 test('iterate over HashMap', () => {
     const map = new HashMap();
 
-    const data = new Map();
+    const data = {};
     for (let i = 0; i < 100; i++) {
-        // console.log('test', i);
         // build index -> value reference
         data['key' + i] = 'value' + i;
         // load up HashMap with values
         map.put('key' + i, 'value' + i);
     }
 
-    // console.log(map);
-    // // let index = 0;
-    for (const e of map.iterator()) {
+    for (const e of map) {
         expect(e.value).toBe(data[e.key]);
     }
 });
