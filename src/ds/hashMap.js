@@ -15,27 +15,19 @@ export class HashMap {
     put(key, value) {
         this._maybeResize();
         const bucket = this._getBucket(key);
+        const kv = keyValue(key, value);
 
-        let foundDupKeyAtIdx = -1;
-        let bucketIdx = 0;
-        for (const kv of bucket) {
-            if (kv.key === key) {
-                foundDupKeyAtIdx = bucketIdx;
-                break;
-            } else {
-                bucketIdx++;
+        for (let i = 0; i < bucket.length; i++) {
+            if (bucket[i].key === key) {
+                // duplicate key found, overwrite value
+                bucket[i] = kv;
+                return;
             }
-        }
+        };
 
-        if (foundDupKeyAtIdx === -1) {
-            // no duplicate key found, add new key value
-            bucket.push(keyValue(key, value));
-            this.size++;
-        } else {
-            // duplicate key found, overwrite value, do not modify size
-            bucket[foundDupKeyAtIdx] = keyValue(key, value);
-        }
-
+        // no duplicate key found, add new key value
+        bucket.push(kv);
+        this.size++;
     }
 
     includes(key) {
