@@ -82,6 +82,7 @@ test('iterate over HashMap', () => {
     }
 
     for (const e of map) {
+        expect(e.key in data).toBeTruthy();
         expect(e.value).toBe(data[e.key]);
     }
 });
