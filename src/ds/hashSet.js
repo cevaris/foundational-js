@@ -1,92 +1,88 @@
-import { LinkedList } from './linkedList';
-
-const InitialBucketSize = 10;
 const ResizeLoadFactor = 0.75;
 
 export class HashSet {
-    constructor(bucketSize = InitialBucketSize) {
+    constructor(bucketSize) {
         // Using a fixed array for the table to prevent resizing
         // Otherwise we can accidentally break the modulo mapping.
-        this.bucketSize = bucketSize;
-        this.buckets = newFixedArray(bucketSize);
-
-        this.buckets.forEach((_, i) => this.buckets[i] = new LinkedList());
-        this.size = 0;
+        this.buckets = newFixedArray(bucketSize || 15);
+        // initialize empty arrays per bucket
+        this.buckets.forEach((_, i) => this.buckets[i] = new Array());
+        this.numOfValues = 0;
     }
 
     add(value) {
-        this._maybeResize();
+        // this._maybeResize();
         const bucket = this._getBucket(value);
 
-        if (bucket.includes(value)) {
+        const found = bucket.find((v) => v === value);
+        if (found) {
+            // found duplicate value; do not insert
             return;
         }
 
-        bucket.add(value);
-        this.size++;
+        // no duplicate value found, add new value
+        bucket.push(value);
+        this.numOfValues++;
     }
 
     includes(value) {
         const bucket = this._getBucket(value);
-
-        return bucket.includes(value);
+        return bucket.find((v) => v === value);
     }
 
     remove(value) {
         const bucket = this._getBucket(value);
 
-        const found = bucket.remove(value);
-        // only if the value was found; we update size
-        if (found) {
-            this.size--;
+        var index = bucket.indexOf(value);
+        if (index > -1) {
+            // value found in bucket, remove
+            bucket.splice(index, 1);
+            this.numOfValues--;
         }
     }
 
     get length() {
-        return this.size;
+        return this.numOfValues;
+    }
+
+    *iterator() {
+        for (let b = 0; b < this.buckets.length; b++) {
+            for (let bi = 0; bi < this.buckets[b].length; bi++) {
+                yield this.buckets[b][bi];
+            }
+        }
+        return this.numOfValues;
     }
 
     [Symbol.iterator]() {
-        let bucketIdx = 0;
-        let buckets = this.buckets;
-        let bucketIter = buckets[bucketIdx].iterator;
-
-        return {
-            next: function () {
-                if (!bucketIter) {
-                    return { value: null, done: true }
-                } else if (!bucketIter.done) {
-                    return bucketIter;
-                } else {
-                    bucketIter = buckets[++bucketIdx].iterator;
-                    return bucketIter;
-                }
-            }
-        }
+        return this.iterator();
     }
 
     _getBucket(value) {
         const hashNumber = hashCode(value);
-        const bucketIdx = hashNumber % InitialBucketSize;
+        const bucketIdx = hashNumber % this.buckets.length;
         return this.buckets[bucketIdx];
     }
 
+    /**
+     * Resize the map if the map loadFactor threshold is passed.
+     * Note: on a resize, the numOfKeyValues stays the same.
+     */
     _maybeResize() {
-        const loadFactor = this.bucketSize * ResizeLoadFactor;
-        if (this.size > loadFactor) {
-            const newBucketSize = this.size * 2;
+        const loadFactor = this.buckets.length * ResizeLoadFactor;
+        if (this.numOfValues > loadFactor) {
+            const newBucketSize = this.buckets.length * 2;
             const newBuckets = newFixedArray(newBucketSize);
-            newBuckets.forEach((_, i) => newBuckets[i] = new LinkedList());
+            newBuckets.forEach((_, i) => newBuckets[i] = new Array());
 
-            for (const e of this) {
-                const hashNumber = hashCode(e);
-                const bucketIdx = hashNumber % InitialBucketSize;
-                const bucket = newBucketSize[bucketIdx];
-                bucket.add(value);
+            // Copy over previously inserted keyValues into the new, larger newBuckets.
+            for (const kv of this) {
+                const newHashNumber = hashCode(kv.key);
+                const newBucketIdx = newHashNumber % newBucketSize;
+                newBuckets[newBucketIdx].push(kv);
             }
 
             this.buckets = newBuckets;
-            this.bucketSize = newBucketSize;
         }
     }
 }
