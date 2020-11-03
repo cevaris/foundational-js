@@ -49,20 +49,24 @@ test('includes from HashSet', () => {
     expect(set.includes('does not exist')).toBeFalsy();
 });
 
-// test('iterate over HashSet', () => {
-//     const set = new HashSet();
+test('iterate over HashSet', () => {
+    const set = new HashSet();
 
-//     const data = {};
-//     for (let i = 0; i < 5; i++) {
-//         // build index -> value reference
-//         data[i] = i.toString();
-//         // load up HashSet with values
-//         set.add(i.toString());
-//     }
+    const data = [];
+    for (let i = 0; i < 1000; i++) {
+        data.push(i);
+        set.add(i);
+    }
 
-//     let index = 0;
-//     for (const e of set) {
-//         expect(e).toBe(data[index]);
-//         index++;
-//     }
-// });
+    for (const value of set) {
+        expect(data.includes(value)).toBeTruthy();
+
+        // remove from data to mark as seen
+        const index = data.findIndex(v => v === value);
+        if (index > -1) {
+            data.splice(index, 1);
+        }
+    }
+
+    expect(data.length === 0).toBeTruthy();
+});

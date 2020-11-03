@@ -11,7 +11,7 @@ export class HashSet {
     }
 
     add(value) {
-        // this._maybeResize();
+        this._maybeResize();
         const bucket = this._getBucket(value);
 
         const found = bucket.find((v) => v === value);
@@ -51,7 +51,7 @@ export class HashSet {
                 yield this.buckets[b][bi];
             }
         }
-        return this.numOfValues;
+        return this.length;
     }
 
     [Symbol.iterator]() {
@@ -75,11 +75,12 @@ export class HashSet {
             const newBuckets = newFixedArray(newBucketSize);
             newBuckets.forEach((_, i) => newBuckets[i] = new Array());
 
-            // Copy over previously inserted keyValues into the new, larger newBuckets.
-            for (const kv of this) {
-                const newHashNumber = hashCode(kv.key);
+            // Copy over previously inserted keyValues into the new, 
+            // larger newBuckets.
+            for (const value of this) {
+                const newHashNumber = hashCode(value);
                 const newBucketIdx = newHashNumber % newBucketSize;
-                newBuckets[newBucketIdx].push(kv);
+                newBuckets[newBucketIdx].push(value);
             }
 
             this.buckets = newBuckets;

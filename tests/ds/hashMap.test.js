@@ -70,13 +70,18 @@ test('iterate over HashMap', () => {
     const data = {};
     for (let i = 0; i < 1000; i++) {
         // build index -> value reference
-        data['key' + i] = 'value' + i;
+        data[i] = 'value' + i;
         // load up HashMap with values
-        map.put('key' + i, 'value' + i);
+        map.put(i, 'value' + i);
     }
 
     for (const e of map) {
         expect(e.key in data).toBeTruthy();
         expect(e.value).toBe(data[e.key]);
+
+        // remove from reference data
+        delete data[e.key];
     }
+
+    expect(Object.keys(data).length === 0).toBeTruthy();
 });
