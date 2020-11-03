@@ -1,5 +1,3 @@
-import { LinkedList } from './linkedList';
-
 const InitialBucketSize = 10;
 const ResizeLoadFactor = 0.75;
 
@@ -10,7 +8,7 @@ export class HashMap {
         this.bucketSize = bucketSize;
         this.buckets = newFixedArray(bucketSize);
 
-        this.buckets.forEach((_, i) => this.buckets[i] = new LinkedList());
+        this.buckets.forEach((_, i) => this.buckets[i] = new Array());
         this.size = 0;
     }
 
@@ -31,11 +29,11 @@ export class HashMap {
 
         if (foundDupKeyAtIdx === -1) {
             // no duplicate key found, add new key value
-            bucket.add(keyValue(key, value));
+            bucket.push(keyValue(key, value));
             this.size++;
         } else {
             // duplicate key found, overwrite value, do not modify size
-            bucket.set(foundDupKeyAtIdx, keyValue(key, value));
+            bucket[foundDupKeyAtIdx] = keyValue(key, value);
         }
 
     }
@@ -67,7 +65,9 @@ export class HashMap {
         let foundKV = this._findKV(bucket, key);
 
         if (foundKV) {
-            bucket.remove(foundKV);
+            var index = bucket.indexOf(foundKV);
+            if (index > -1) bucket.splice(index, 1);
+            // bucket.remove(foundKV);
             this.size--;
         }
     }
@@ -115,13 +115,13 @@ export class HashMap {
         if (this.size > loadFactor) {
             const newBucketSize = this.size * 2;
             const newBuckets = newFixedArray(newBucketSize);
-            newBuckets.forEach((_, i) => newBuckets[i] = new LinkedList());
+            newBuckets.forEach((_, i) => newBuckets[i] = new Array());
 
             for (const e of this) {
                 const hashNumber = hashCode(e);
                 const bucketIdx = hashNumber % InitialBucketSize;
                 const bucket = newBucketSize[bucketIdx];
-                bucket.add(value);
+                bucket.push(value);
             }
 
             this.buckets = newBuckets;
