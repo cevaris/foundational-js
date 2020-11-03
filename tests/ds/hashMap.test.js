@@ -74,7 +74,7 @@ test('iterate over HashMap', () => {
     const map = new HashMap();
 
     const data = {};
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 1000; i++) {
         // build index -> value reference
         data['key' + i] = 'value' + i;
         // load up HashMap with values

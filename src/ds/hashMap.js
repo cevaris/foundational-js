@@ -10,7 +10,7 @@ export class HashMap {
     }
 
     put(key, value) {
-        // this._maybeResize();
+        this._maybeResize();
         const bucket = this._getBucket(key);
         const kv = keyValue(key, value);
 
@@ -99,7 +99,6 @@ export class HashMap {
 
 
             this.buckets = newBuckets;
-            // this.buckets.length = newBucketSize;
         }
     }
 }
