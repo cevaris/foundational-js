@@ -38,7 +38,7 @@ test('remove elements from  LinkedList', () => {
 
     // remove first occurrence only
     expect(list.remove('b')).toBe(true);
-    expect(Array.from(list)).toStrictEqual(['a', 'b','c']);
+    expect(Array.from(list)).toStrictEqual(['a', 'b', 'c']);
 
     // remove from middle of list
     expect(list.remove('b')).toBe(true);
@@ -70,7 +70,7 @@ test('get LinkedList values by index', () => {
     expect(list.get(0)).toBe('a');
     expect(list.get(1)).toBe('b');
     expect(list.get(2)).toBe('c');
-    
+
     // expect index out of bound error 
     expect(() => list.get(3)).toThrowError(/IndexOutOfBounds 3/);
 });
@@ -89,7 +89,7 @@ test('set LinkedList values by index', () => {
     expect(list.set(1, 'y')).toBe('b');
     expect(list.set(2, 'z')).toBe('c');
 
-    expect(Array.from(list)).toStrictEqual(['x', 'y', 'z']); 
+    expect(Array.from(list)).toStrictEqual(['x', 'y', 'z']);
 
     // list set can only work on existing indexes
     expect(() => list.set(3, 'zz')).toThrowError(/IndexOutOfBounds 3/);
@@ -104,4 +104,24 @@ test('includes in LinkedList', () => {
 
     expect(list.includes('a')).toBeTruthy()
     expect(list.includes('3')).toBeFalsy();
+});
+
+test('iterate through list', () => {
+    const list = new LinkedList();
+
+    const data = [];
+    for (let i = 0; i < 100; i++) {
+        list.add(i);
+        data.push(i);
+    }
+
+    for (const e of list) {
+        // pop values from reference list
+        const expectedValue = data.shift();
+        // expect values from reference list to be seen
+        expect(e).toBe(expectedValue);
+    }
+
+    // verify all values where seen
+    expect(data.length === 0).toBeTruthy();
 });

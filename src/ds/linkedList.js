@@ -118,31 +118,29 @@ export class LinkedList {
     filter(predicate) { }
     map(func) { }
 
-    /**
-     * Defines an iterator such that callers can easily iterate over LinkedList.
-     * ex. 
-     * 
-     * for (const e of list) {
-     *    console.log(e);
-     * }
-     */
-    [Symbol.iterator]() {
-        let node = this.head;
-        return {
-            next() {
-                if (node && node.next) {
-                    const value = node.value;
-                    node = node.next;
-                    return { value: value, done: false };
-                } else if (node) {
-                    const value = node.value;
-                    node = node.next;
-                    return { value: value, done: false };
-                } else {
-                    return { value: null, done: true };
-                }
-            }
+    *iterator() {
+        let temp = this.head;
+        while (temp && temp.next) {
+            yield temp.value;
+            temp = temp.next;
         }
+
+        // capture the last node if non-null
+        if (temp) {
+            yield temp.value;
+        }
+    }
+
+    // /**
+    //  * Defines an iterator such that callers can easily iterate over LinkedList.
+    //  * ex. 
+    //  * 
+    //  * for (const e of list) {
+    //  *    console.log(e);
+    //  * }
+    //  */
+    [Symbol.iterator]() {
+        return this.iterator();
     }
 
     toString() {
