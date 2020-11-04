@@ -121,24 +121,25 @@ export class LinkedList {
     *iterator() {
         let temp = this.head;
         while (temp && temp.next) {
+            // yield values as we see them
             yield temp.value;
             temp = temp.next;
         }
 
-        // capture the last node if non-null
+        // yield the last node value if non-null
         if (temp) {
             yield temp.value;
         }
     }
 
-    // /**
-    //  * Defines an iterator such that callers can easily iterate over LinkedList.
-    //  * ex. 
-    //  * 
-    //  * for (const e of list) {
-    //  *    console.log(e);
-    //  * }
-    //  */
+    /**
+     * Defines an iterator such that callers can easily iterate over LinkedList.
+     * ex. 
+     * 
+     * for (const e of list) {
+     *    console.log(e);
+     * }
+     */
     [Symbol.iterator]() {
         return this.iterator();
     }
