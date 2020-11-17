@@ -21,6 +21,9 @@ test('contains elements in BinaryTree', () => {
     bst.add('c');
     bst.add('b');
     bst.add('a');
+
+    // the following test cases will fail with the default comparator
+    // due to not being able to execute a deep equals check
     bst.add([1]);
     bst.add({ x: { y: 1 } });
 

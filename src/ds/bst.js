@@ -1,3 +1,6 @@
+/**
+ * Taken from https://www.baeldung.com/java-binary-tree
+ */
 export class BinaryTree {
     /**
      * @param comparator Function that returns -1=less, 0=equal, 1=greater
@@ -28,11 +31,9 @@ export class BinaryTree {
                 node.left = _add(node.left, value);
             } else if (state === 1) {
                 node.right = _add(node.right, value);
-            } else {
-                // value already exists
-                return node;
             }
 
+            // found node with equal value
             return node;
         }
 
@@ -49,7 +50,9 @@ export class BinaryTree {
             const state = self.comparator(value, node.value);
             if (state === 0) {
                 return true;
-            } else if (state === -1) {
+            }
+
+            if (state === -1) {
                 return _contains(node.left, value);
             } else {
                 return _contains(node.right, value);
