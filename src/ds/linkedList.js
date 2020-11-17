@@ -120,15 +120,10 @@ export class LinkedList {
 
     *iterator() {
         let temp = this.head;
-        while (temp && temp.next) {
+        while (temp) {
             // yield values as we see them
             yield temp.value;
             temp = temp.next;
-        }
-
-        // yield the last node value if non-null
-        if (temp) {
-            yield temp.value;
         }
     }
 
