@@ -16,31 +16,47 @@ export class BinaryTree {
     }
 
     add(value) {
-        this.root = this._add(this.root, value);
-    }
+        const self = this;
 
-    /**
-     * private method
-     * @param {*} node 
-     * @param {*} value 
-     */
-    _add(node, value) {
-        if (node === null) {
-            return new Node(value);
-        }
+        function _add(node, value) {
+            if (node === null) {
+                return new Node(value);
+            }
 
-        const state = this.comparator(value, node.value);
-        //console.log(state, value, node.value);
-        if (state === -1) {
-            node.left = this._add(node.left, value);
-        } else if (state === 1) {
-            node.right = this._add(node.right, value);
-        } else {
-            // value already exists
+            const state = self.comparator(value, node.value);
+            if (state === -1) {
+                node.left = _add(node.left, value);
+            } else if (state === 1) {
+                node.right = _add(node.right, value);
+            } else {
+                // value already exists
+                return node;
+            }
+
             return node;
         }
 
-        return node;
+        this.root = _add(this.root, value);
+    }
+
+    contains(value) {
+        const self = this;
+        function _contains(node, value) {
+            if (node === null) {
+                return false;
+            }
+
+            const state = self.comparator(value, node.value);
+            if (state === 0) {
+                return true;
+            } else if (state === -1) {
+                return _contains(node.left, value);
+            } else {
+                return _contains(node.right, value);
+            }
+        }
+
+        return _contains(this.root, value);
     }
 
     *iterator() {
@@ -77,13 +93,11 @@ class Node {
 }
 
 function defaultComparator(a, b) {
-    if (a < b) {
-        return -1; // left is less than right
-    } else if (a > b) {
-        return 1;  // left is greater than right
-    } else {
+    if (a === b) {
         return 0;  // equal to
     }
+
+    return (a < b) ? -1 : 1;
 }
 
 export default BinaryTree;
