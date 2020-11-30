@@ -15,28 +15,28 @@ export class BinaryTree {
     }
 
     add(value) {
-        function _add(node, value) {
+        function recursiveAdd(node, value) {
             if (node === null) {
                 return new Node(value);
             }
 
             const state = comparator(value, node.value);
             if (state === State.LESS) {
-                node.left = _add(node.left, value);
+                node.left = recursiveAdd(node.left, value);
             }
             if (state === State.GREATER) {
-                node.right = _add(node.right, value);
+                node.right = recursiveAdd(node.right, value);
             }
 
             // found node with equal value
             return node;
         }
 
-        this.root = _add(this.root, value);
+        this.root = recursiveAdd(this.root, value);
     }
 
     contains(value) {
-        function _contains(node, value) {
+        function recursiveContains(node, value) {
             if (node === null) {
                 return false;
             }
@@ -47,13 +47,13 @@ export class BinaryTree {
             }
 
             if (state === State.LESS) {
-                return _contains(node.left, value);
+                return recursiveContains(node.left, value);
             } else {
-                return _contains(node.right, value);
+                return recursiveContains(node.right, value);
             }
         }
 
-        return _contains(this.root, value);
+        return recursiveContains(this.root, value);
     }
 
     remove(value) {
