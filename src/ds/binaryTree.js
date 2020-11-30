@@ -109,16 +109,43 @@ export class BinaryTree {
         return deleted;
     }
 
-    *iterator() {
-        function* inOrder(node) {
-            if (node !== null) {
-                yield* inOrder(node.left);
-                yield node.value;
-                yield* inOrder(node.right);
-            }
+    *iterator(order) {
+        switch (order) {
+            case Order.PRE_ORDER:
+                yield* this.preOrder(this.root);
+                break;
+            case Order.POST_ORDER:
+                yield* this.postOrder(this.root);
+                break;
+            case Order.IN_ORDER:
+            default:
+                yield* this.inOrder(this.root);
+                break;
         }
+    }
 
-        yield* inOrder(this.root);
+    *inOrder(node) {
+        if (node !== null) {
+            yield* this.inOrder(node.left);
+            yield node.value;
+            yield* this.inOrder(node.right);
+        }
+    }
+
+    *preOrder(node) {
+        if (node !== null) {
+            yield node.value;
+            yield* this.preOrder(node.left);
+            yield* this.preOrder(node.right);
+        }
+    }
+
+    *postOrder(node) {
+        if (node !== null) {
+            yield* this.preOrder(node.left);
+            yield* this.preOrder(node.right);
+            yield node.value;
+        }
     }
 
     /**
@@ -145,6 +172,16 @@ const State = {
     LESS: -1,
     EQUAL: 0,
     GREATER: 1
+};
+
+/**
+ * BinaryTree traversal order
+ */
+export const Order = {
+    IN_ORDER: Symbol('IN_ORDER'),
+    PRE_ORDER: Symbol('PRE_ORDER'),
+    POST_ORDER: Symbol('POST_ORDER'),
+    LEVEL_ORDER: Symbol('LEVEL_ORDER')
 };
 
 class Node {
