@@ -5,6 +5,18 @@ test('create empty BinaryTree', () => {
     expect(binaryTree.length).toBe(0);
 });
 
+test('add number elements to BinaryTree', () => {
+    const binaryTree = new BinaryTree();
+
+    binaryTree.add(100);
+    binaryTree.add(50);
+    binaryTree.add(75)
+    binaryTree.add(60);
+    binaryTree.add(25);
+
+    expect(binaryTree.length).toBe(5);
+});
+
 test('add elements to BinaryTree', () => {
     const binaryTree = new BinaryTree();
 
@@ -25,11 +37,11 @@ test('contains elements in BinaryTree', () => {
     binaryTree.add({ x: { y: 1 } });
 
     expect(binaryTree.contains(3)).toBeFalsy();
-    expect(binaryTree.contains('c')).toBeTruthy();
-    expect(binaryTree.contains('b')).toBeTruthy();
-    expect(binaryTree.contains('a')).toBeTruthy();
-    expect(binaryTree.contains([1])).toBeTruthy();
-    expect(binaryTree.contains({ x: { y: 1 } })).toBeTruthy();
+    expect(binaryTree.contains('c')).toBe(true);
+    expect(binaryTree.contains('b')).toBe(true);
+    expect(binaryTree.contains('a')).toBe(true);
+    expect(binaryTree.contains([1])).toBe(true);
+    expect(binaryTree.contains({ x: { y: 1 } })).toBe(true);
 });
 
 test('can remove value from leaf node of a BinaryTree', () => {

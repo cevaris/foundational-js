@@ -201,8 +201,8 @@ class Node {
  * @param {*} b 
  */
 function comparator(a, b) {
-    const left = JSON.stringify(a);
-    const right = JSON.stringify(b);
+    const left = a instanceof Object ? JSON.stringify(a) : a;
+    const right = b instanceof Object ? JSON.stringify(b) : b;
 
     if (left === right) {
         return State.EQUAL;
@@ -213,6 +213,11 @@ function comparator(a, b) {
 
 function findSmallestValue(node) {
     return node.left === null ? node.value : findSmallestValue(node.left);
+}
+
+function isNum(n) {
+    var numStr = /^-?(\d+\.?\d*)$|(\d*\.?\d+)$/;
+    return numStr.test(n.toString());
 }
 
 export default BinaryTree;
