@@ -194,6 +194,8 @@ class Node {
 
 /**
  * Given two values, stringify them and return a comparison number.
+ * If an value is an object, we first stringify the object. 
+ * If a scalar value, we use built-in comparison logic.
  * - a  <  b @returns {State.LESS}
  * - a === b @returns {State.EQUAL}
  * - a  >  b @returns {State.GREATER}
@@ -213,11 +215,6 @@ function comparator(a, b) {
 
 function findSmallestValue(node) {
     return node.left === null ? node.value : findSmallestValue(node.left);
-}
-
-function isNum(n) {
-    var numStr = /^-?(\d+\.?\d*)$|(\d*\.?\d+)$/;
-    return numStr.test(n.toString());
 }
 
 export default BinaryTree;
