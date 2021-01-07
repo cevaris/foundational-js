@@ -13,5 +13,8 @@ function bubbleSort(arr) {
     return arr;
 }
 
-console.log(bubbleSort([1, 3, 43, 2, 3, 6, 9]))
-console.log(bubbleSort([10, 9, 8, 4, 3, 2, 1]))
+console.log(bubbleSort([1, 3, 43, 2, 3, 6, 9]));
+console.log(bubbleSort([10, 9, 8, 4, 3, 2, 1]));
+
+// complexity: O(N^2)
+// space: O(1)

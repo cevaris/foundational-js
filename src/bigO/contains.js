@@ -9,3 +9,6 @@ function contains(value, arr) {
 
 console.log(contains(10, [1, 2, 3, 4, 5]));
 console.log(contains(3, [1, 2, 3, 4, 5]));
+
+// complexity: O(N)
+// space: O(1)
