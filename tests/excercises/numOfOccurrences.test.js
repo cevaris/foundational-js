@@ -8,8 +8,6 @@
  * return
  */
 
-const { HashMap } = require('../../src/ds/hashMap');
-
 test('count numbers with variant occurrences', () => {
     const arr = [1, 2, 2, 1, 3, 3, 5, 3];
     expect(numOfOccurrences(arr)).toEqual(expect.arrayContaining([
@@ -51,6 +49,9 @@ test('count objects with variant occurrences', () => {
         { key: { obj1: 2 }, value: 1 },
     ]));
 });
+
+
+const { HashMap } = require('../../src/ds/hashMap');
 
 function numOfOccurrences(arr) {
     const occurrenceMap = new HashMap();

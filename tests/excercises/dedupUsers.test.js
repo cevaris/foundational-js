@@ -1,10 +1,7 @@
 /**
  * Write a function to deduplicate the following Users array by id field.
  * `id` field is unique across all users.
- * 
- * Note, dont use your custom HashMap; use regular ES6 `new Map()`.
  */
-
 
 test('dedup user list that contain duplicates', () => {
     const userList = [
@@ -17,7 +14,7 @@ test('dedup user list that contain duplicates', () => {
         { id: 11, name: 'Nick', gender: 'male' },
     ];
 
-    expect(dedupUsers(userList)).toEqual(
+    expect(dedupUsersById(userList)).toEqual(
         expect.arrayContaining([
             { id: 13, name: 'Jacob' },
             { id: 11, name: 'Nick', gender: 'male' },
@@ -30,13 +27,16 @@ test('dedup user list that contain duplicates', () => {
 
 test('handles empty user list', () => {
     const userList = [];
-    expect(dedupUsers(userList)).toEqual([]);
+    expect(dedupUsersById(userList)).toEqual([]);
 });
 
-function dedupUsers(userList) {
-    const userMap = new Map();
+
+const { HashMap } = require('../../src/ds/hashMap');
+
+function dedupUsersById(userList) {
+    const userMap = new HashMap();
     userList.forEach(user => {
-        userMap.set(user.id, user)
+        userMap.put(user.id, user);
     });
-    return Array.from(userMap.values());
+    return Array.from(userMap).map((kv) => kv.value);
 }

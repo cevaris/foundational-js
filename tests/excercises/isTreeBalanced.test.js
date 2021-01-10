@@ -6,9 +6,6 @@
  * Return true if balanced, false if not.
  */
 
-const { BinaryTree } = require('../../src/ds/binaryTree');
-
-
 test('returns true for balanced tree', () => {
     const tree = new BinaryTree();
     const data = [100, 50, 150, 75, 25, 175, 125];
@@ -42,6 +39,9 @@ test('returns true for tree with 1 node', () => {
     const tree = new BinaryTree();
     expect(isTreeBalanced(tree)).toBe(true);
 });
+
+
+const { BinaryTree } = require('../../src/ds/binaryTree');
 
 function isTreeBalanced(tree) {
     function loop(node) {

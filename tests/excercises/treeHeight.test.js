@@ -3,8 +3,6 @@
  * Note: Feel free to draw the trees out to help you understand.
  */
 
-const { BinaryTree } = require('../../src/ds/binaryTree');
-
 test('returns correct height', () => {
     const tree = new BinaryTree();
     const data = [5, 4, 3, 1, 50, 49];
@@ -39,6 +37,9 @@ test('returns 1 for tree with single node', () => {
     tree.add(3);
     expect(treeHeight(tree.root)).toBe(1);
 });
+
+
+const { BinaryTree } = require('../../src/ds/binaryTree');
 
 function treeHeight(node) {
     if (node === null) {
