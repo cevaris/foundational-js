@@ -4,11 +4,27 @@ const { BinaryTree } = require('../ds/binaryTree.js');
  * Calculate the height of a BinaryTree.
  */
 
-const tree = new BinaryTree();
-tree.add(5)
-tree.add(4)
-tree.add(3)
-tree.add(1)
+let tree = new BinaryTree();
+tree.add(5);
+tree.add(4);
+tree.add(3);
+tree.add(1);
+console.log(height(tree.root)) // 4
+
+tree = new BinaryTree();
+console.log(height(tree.root)) // 0
+
+tree = new BinaryTree();
+tree.add(5);
+tree.add(3);
+tree.add(6);
+tree.add(1);
+console.log(height(tree.root)) // 3
+
+tree = new BinaryTree();
+tree.add(5);
+console.log(height(tree.root)) // 1
+
 
 function height(node) {
     if (node === null || node === undefined) {
@@ -21,6 +37,3 @@ function height(node) {
     return Math.max(leftHeight, rightHeight) + 1;
 }
 
-// https://www.geeksforgeeks.org/write-a-c-program-to-find-the-maximum-depth-or-height-of-a-tree/
-console.log(JSON.stringify(tree, null, 3))
-console.log(height(tree.root))

@@ -15,9 +15,10 @@ class HashMap {
 
         const bucket = this._getBucket(key);
         const kv = keyValue(key, value);
+        const keyStr = JSON.stringify(key);
 
         for (let i = 0; i < bucket.length; i++) {
-            if (bucket[i].key === key) {
+            if (JSON.stringify(bucket[i].key) === keyStr) {
                 // duplicate key found, overwrite value
                 bucket[i] = kv;
                 return;
@@ -32,12 +33,14 @@ class HashMap {
     includes(key) {
         const bucket = this._getBucket(key);
         // if some key found a bucket, return true
-        return bucket.some(kv => kv.key === key);
+        const keyStr = JSON.stringify(key);
+        return bucket.some(kv => JSON.stringify(kv.key) === keyStr);
     }
 
     get(key) {
         const bucket = this._getBucket(key);
-        const foundKV = bucket.find(kv => kv.key === key);
+        const keyStr = JSON.stringify(key);
+        const foundKV = bucket.find(kv => JSON.stringify(kv.key) === keyStr);
         if (foundKV) {
             // key found in bucket, return value
             return foundKV.value;
