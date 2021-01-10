@@ -1,4 +1,5 @@
-import { BinaryTree, Order } from '../../src/ds/binaryTree';
+const { BinaryTree, Order } = require('../../src/ds/binaryTree');
+// const { BinaryTree } = require('../ds/binaryTree.js');
 
 test('create empty BinaryTree', () => {
     const binaryTree = new BinaryTree();

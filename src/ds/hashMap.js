@@ -1,6 +1,6 @@
 const ResizeLoadFactor = 0.75;
 
-export class HashMap {
+class HashMap {
     constructor(bucketSize) {
         // Using a fixed array for the table to prevent resizing
         // Otherwise we can accidentally break the modulo mapping.
@@ -138,4 +138,4 @@ function keyValue(key, value) {
     return { key: key, value: value };
 }
 
-export default HashMap;
+exports.HashMap = HashMap;

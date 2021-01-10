@@ -1,4 +1,4 @@
-import { HashSet } from "../../src/ds/hashSet";
+const { HashSet } = require("../../src/ds/hashSet");
 
 test('create empty HashSet', () => {
     const set = new HashSet();

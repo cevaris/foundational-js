@@ -1,4 +1,4 @@
-import { Vector } from '../../src/ds/vector';
+const { Vector } = require('../../src/ds/vector');
 
 test('create empty Vector', () => {
     const vector = new Vector();

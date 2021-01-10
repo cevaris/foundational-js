@@ -1,6 +1,6 @@
 const ResizeLoadFactor = 0.75;
 
-export class HashSet {
+class HashSet {
     constructor(bucketSize) {
         // Using a fixed array for the table to prevent resizing
         // Otherwise we can accidentally break the modulo mapping.
@@ -118,4 +118,4 @@ function newFixedArray(size) {
     return array;
 }
 
-export default HashSet;
+exports.HashSet = HashSet;

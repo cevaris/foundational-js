@@ -1,7 +1,7 @@
 /**
  * Taken from https://www.baeldung.com/java-binary-tree
  */
-export class BinaryTree {
+class BinaryTree {
     constructor() {
         this.root = null;
     }
@@ -177,7 +177,7 @@ const State = {
 /**
  * BinaryTree traversal order
  */
-export const Order = {
+const Order = {
     IN_ORDER: Symbol('IN_ORDER'),
     PRE_ORDER: Symbol('PRE_ORDER'),
     POST_ORDER: Symbol('POST_ORDER'),
@@ -217,4 +217,5 @@ function findSmallestValue(node) {
     return node.left === null ? node.value : findSmallestValue(node.left);
 }
 
-export default BinaryTree;
+exports.BinaryTree = BinaryTree;
+exports.Order = Order;

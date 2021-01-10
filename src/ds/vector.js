@@ -3,7 +3,7 @@
  * Internal array grows/shrinks/shifts as needed. 
  * Note: Array.push is not used because we purposefully seal the Array to a fixed size. 
  */
-export class Vector {
+class Vector {
     constructor() {
         this.array = newArray(0);
     }
@@ -145,3 +145,5 @@ function truncateArr(currArr, newLength) {
     }
     return array;
 }
+
+exports.Vector = Vector;

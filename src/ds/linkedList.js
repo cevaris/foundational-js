@@ -9,7 +9,7 @@ class Node {
  * Java based LinkedList
  * https://docs.oracle.com/javase/7/docs/api/java/util/LinkedList.html 
  */
-export class LinkedList {
+class LinkedList {
     constructor() {
         this.head = null;
     }
@@ -147,3 +147,5 @@ export class LinkedList {
         return `LinkedList(${arr.join(',')})`;
     }
 }
+
+exports.LinkedList = LinkedList;

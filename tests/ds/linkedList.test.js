@@ -1,4 +1,4 @@
-import { LinkedList } from '../../src/ds/linkedList';
+const { LinkedList } = require('../../src/ds/linkedList');
 
 test('create empty LinkedList', () => {
     const list = new LinkedList();
